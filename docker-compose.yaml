@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  demo-postgres:
+    container_name: demo-postgres
+    image: postgres
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_PASSWORD: 28360788
+      POSTGRES_USER: slim
+    restart: always
