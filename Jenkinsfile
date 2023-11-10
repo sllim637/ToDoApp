@@ -13,7 +13,12 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Etape de test...'
-                // Ajoutez ici les commandes pour exécuter les tests
+                sh 'mvnw test'
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                }
             }
         }
         stage('Deploy') {
