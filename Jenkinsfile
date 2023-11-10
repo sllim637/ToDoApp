@@ -13,7 +13,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Etape de test...'
-                sh 'mvnw test'
+                sh './mvnw test'
             }
             post {
                 always {
