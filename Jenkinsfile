@@ -7,13 +7,13 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Etape de construction...'
-                sh 'mvn clean package'
+                sh 'mvn clean install'
             }
         }
         stage('Test') {
             steps {
                 echo 'Etape de test...'
-                sh './mvnw test'
+                sh 'mvn test'
             }
             post {
                 always {
