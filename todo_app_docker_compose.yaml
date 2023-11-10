@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database service
+  postgres:
+    image: postgres:latest
+    ports:
+      - "15432:5432"  # Map the local port 15432 to the container's PostgreSQL port
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: slim
+      POSTGRES_PASSWORD: 28360788
+
+  # Spring Boot application service
+  spring-app:
+    build: .
+    ports:
+      - "8080:8080"  # Map the local port 8080 to the Spring Boot application port
+    depends_on:
+      - postgres  # Ensure the Spring Boot app starts after the database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres  # Use the service name as the host
+      SPRING_DATASOURCE_USERNAME: slim
+      SPRING_DATASOURCE_PASSWORD: 28360788
