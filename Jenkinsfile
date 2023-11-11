@@ -17,7 +17,14 @@ pipeline {
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
+                     script {
+                        // Récupérer le contenu du rapport JUnit
+                            def junitReport = readFile '**/target/surefire-reports/TEST-*.xml'
+                            // Envoyer un e-mail avec le rapport JUnit
+                            emailext body: "Le rapport de vos tests JUnit :\n\n ${junitReport}",
+                                subject: "Rapport JUnit de todo_list",
+                                to: "slim.hammami1977@gmail.com"
+                                }
                 }
             }
         }
