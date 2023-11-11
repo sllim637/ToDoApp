@@ -19,12 +19,17 @@ pipeline {
                 always {
                      script {
                         // Récupérer le contenu du rapport JUnit
-                            def junitReport = readFile '**/target/surefire-reports/TEST-*.xml'
+                        //    def junitReport = readFile '**/target/surefire-reports/TEST-*.xml'
                             // Envoyer un e-mail avec le rapport JUnit
-                            emailext body: "Le rapport de vos tests JUnit :\n\n ${junitReport}",
-                                subject: "Rapport JUnit de todo_list",
-                                to: "slim.hammami1977@gmail.com"
-                                }
+                        //    emailext body: "Le rapport de vos tests JUnit :\n\n ${junitReport}",
+                        //        subject: "Rapport JUnit de todo_list",
+                        //        to: "slim.hammami1977@gmail.com"
+                        // Rechercher les rapports JUnit
+                        sh 'find $WORKSPACE -name "TEST-*.xml"'
+
+                        // Essayez d'afficher le contenu d'un fichier de rapport pour vérification
+                        sh 'cat $(find $WORKSPACE -name "TEST-*.xml" -print -quit)'
+                     }
                 }
             }
         }
