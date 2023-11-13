@@ -32,15 +32,16 @@ pipeline {
                 }
             }
         }
-    
-            
-        stage('SonarQube analysis') {
-            steps {
-                // Use SonarScanner to analyze the project
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
-                }
+        node {
+        stage('SCM') {
+            checkout scm
+        }
+        stage('SonarQube Analysis') {
+            def mvn = tool 'Default Maven';
+            withSonarQubeEnv() {
+            sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=TodoApp -Dsonar.projectName='TodoApp'"
             }
+        }
         }
 
         // stage('Performance Tests') {
