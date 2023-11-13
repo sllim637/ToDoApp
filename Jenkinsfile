@@ -31,14 +31,15 @@ pipeline {
                                 }
                 }
             }
-        }
+        }     
+            }
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARSERVER}") {
                 sh '''mvn clean verify sonar:sonar \
                 -Dsonar.projectKey=TodoApp \
                 -Dsonar.projectName=''TodoApp'' \
-                -Dsonar.host.url=http://localhost:9000 \
+                -Dsonar.host.url="${SONARSERVER}" \
                 -Dsonar.token=sqp_a8d81e26191f1f0675c2655a0174804a0e836302'''
             }
             }
