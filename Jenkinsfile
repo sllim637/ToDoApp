@@ -32,7 +32,7 @@ pipeline {
                 }
             }
         }
-        stage('Sonar Analysis') {
+    
             
         stage('SonarQube analysis') {
             steps {
@@ -41,7 +41,6 @@ pipeline {
                     sh 'mvn sonar:sonar'
                 }
             }
-        }
         }
 
         // stage('Performance Tests') {
