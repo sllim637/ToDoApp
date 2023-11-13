@@ -34,7 +34,7 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv() {
+                withSonarQubeEnv("${SONARSERVER}") {
                 sh "mvn clean verify sonar:sonar -Dsonar.projectKey=TodoApp -Dsonar.projectName='TodoApp'"
             }
             }
