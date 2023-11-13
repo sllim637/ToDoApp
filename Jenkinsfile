@@ -3,6 +3,10 @@ pipeline {
     tools {
             maven 'Maven3' // Use the name you provided while configuring Maven in Jenkins
         }
+    environment {
+        SONARSERVER = 'sonarserver'
+        SONARSCANNER = 'sonarscanner'
+    }
     stages {
         stage('Build') {
             steps {
@@ -28,11 +32,21 @@ pipeline {
                 }
             }
         }
-        stage('Static Analysis') {
-            steps {
-                // Lancement de l'analyse statique avec ZAP
-                script {
-                    sh 'zap.sh -quickurl /var/jenkins_home/workspace/full_todo_pipeline -quickout /var/jenkins_home/workspace/full_todo_pipeline/security_reports/security_report.html'
+        stage('Sonar Analysis') {
+            environment {
+                scannerHome = tool "${SONARSCANNER}"
+            }
+            steps{
+                withSonarQubeEnv("${SONARSERVER}"){
+                    sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+                    -Dsonar.projectName=vprofile \
+                    -Dsonar.projectVersion=1.0 \
+                    -Dsonar.sources=src/ \
+                    -Dsonar.java.binaries=target/test-classes/com/visualpathit/acocunt/controllerTest/ \
+                    -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
+                    '''
                 }
             }
         }
