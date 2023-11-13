@@ -10,7 +10,7 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
-        stage('Test') {
+        stage('Test + Email notification') {
             steps {
                 echo 'Etape de test...'
                 sh 'mvn test'
@@ -28,6 +28,21 @@ pipeline {
                 }
             }
         }
+        stage('Static Analysis') {
+            steps {
+                // Lancement de l'analyse statique avec ZAP
+                script {
+                    sh 'zap.sh -quickurl /var/jenkins_home/workspace/full_todo_pipeline -quickout /var/jenkins_home/workspace/full_todo_pipeline/security_reports/security_report.html'
+                }
+            }
+        }
+
+        // stage('Performance Tests') {
+        //     steps {
+        //         // Étape pour les tests de performance avec Apache JMeter
+        //         sh 'jmeter -n -t /path/to/performance_test.jmx -l /path/to/performance_results.jtl'
+        //     }
+        // }
         stage('Deploy') {
             steps {
                 echo 'Etape de déploiement...'
