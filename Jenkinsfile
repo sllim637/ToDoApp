@@ -38,7 +38,7 @@ pipeline {
             sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=TodoApp -Dsonar.projectName='TodoApp'"
             }
         }
-        }
+        
 
         // stage('Performance Tests') {
         //     steps {
