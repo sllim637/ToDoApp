@@ -37,7 +37,8 @@ pipeline {
                 withSonarQubeEnv("${SONARSERVER}") {
                 sh '''mvn clean verify sonar:sonar \
                 -Dsonar.projectKey=TodoApp \
-                -Dsonar.projectName=''TodoApp'' '''
+                -Dsonar.projectName=''TodoApp'' \
+                -Dorg.slf4j.simpleLogger.defaultLogLevel=debug '''
             }
             }
             
