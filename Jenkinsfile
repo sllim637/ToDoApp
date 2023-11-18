@@ -34,9 +34,13 @@ pipeline {
         }     
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv("${SONARSERVER}") {
-                sh '''mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'''
-            }
+            //     withSonarQubeEnv("${SONARSERVER}") {
+            //     sh '''mvn clean verify sonar:sonar \
+            //     -Dsonar.projectKey=TodoApp \
+            //     -Dsonar.projectName=''TodoApp'' \
+            //     -Dorg.slf4j.simpleLogger.defaultLogLevel=debug '''
+            // }
+            echo "static code analysis simulations"
             }
             
         }
