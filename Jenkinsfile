@@ -28,17 +28,14 @@ pipeline {
                         emailext body: junitReports,
                         subject: "Rapports JUnit",
                         to: "slim.hammami1977@gmail.com"
-                                }
+                        }
                 }
             }
         }     
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARSERVER}") {
-                sh '''mvn clean verify sonar:sonar \
-                -Dsonar.projectKey=TodoApp \
-                -Dsonar.projectName=''TodoApp'' \
-                -Dorg.slf4j.simpleLogger.defaultLogLevel=debug '''
+                sh '''mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'''
             }
             }
             
