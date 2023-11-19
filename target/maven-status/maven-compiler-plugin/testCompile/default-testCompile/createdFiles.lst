@@ -1,0 +1,4 @@
+com/example/service/ToDoServiceTest.class
+com/example/web/ToDoControllerTest.class
+com/example/util/PayloadValidatorTest.class
+com/example/DemoApplicationTests.class
