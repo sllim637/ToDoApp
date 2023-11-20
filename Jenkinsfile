@@ -2,12 +2,13 @@ pipeline {
     agent any
     tools {
             maven 'Maven3' // Use the name you provided while configuring Maven in Jenkins
+            terraform 'terraform'
         }
     environment {
         SONARSERVER = 'sonarserver'
         SONARSCANNER = 'sonarscanner'
-         AWS_ACCESS_KEY_ID = credentials('jAWS_ACCESS_KEY_ID')
-         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_ACCESS_KEY_ID = credentials('jAWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
     stages {
         stage('Build') {
@@ -54,6 +55,11 @@ pipeline {
         //         sh 'jmeter -n -t /path/to/performance_test.jmx -l /path/to/performance_results.jtl'
         //     }
         // }
+         stage('Terraform Init') {
+                   steps {
+                       sh 'terraform init'
+                   }
+         }
         stage('Deploy') {
             steps {
                 echo 'Etape de déploiement...'
