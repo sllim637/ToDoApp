@@ -9,4 +9,10 @@ resource "aws_instance" "fromJenkinsInstance" {
   tags = {
     Name = "MonInstanceEC2FromJenkins"
   }
+
+}
+
+
+output "instance_public_ip" {
+  value = aws_instance.fromJenkinsInstance.public_ip
 }
