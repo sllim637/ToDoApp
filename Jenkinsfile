@@ -9,6 +9,8 @@ pipeline {
         SONARSCANNER = 'sonarscanner'
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        EC2_PUBLIC_IP = "" // Placeholder for the public IP address
+
     }
     stages {
         stage('Build') {
@@ -64,6 +66,10 @@ pipeline {
                      steps {
                          withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}"]) {
                              sh 'terraform apply -auto-approve'
+                             EC2_PUBLIC_IP = sh(script: "terraform output -raw instance_public_ip", returnStdout: true).trim()
+                             echo "L'adresse IP publique de l'instance EC2 est : ${EC2_PUBLIC_IP}"
+
+
                          }
          }
          }
