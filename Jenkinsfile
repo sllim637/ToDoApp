@@ -62,17 +62,20 @@ pipeline {
                        sh 'terraform init'
                    }
          }
-         stage('Terraform Apply') {
-                     steps {
-                         withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}"]) {
-                             sh 'terraform apply -auto-approve'
-                             EC2_PUBLIC_IP = sh(script: "terraform output -raw instance_public_ip", returnStdout: true).trim()
-                             echo "L'adresse IP publique de l'instance EC2 est : ${EC2_PUBLIC_IP}"
-
-
-                         }
-         }
-         }
+       stage('Terraform Apply') {
+           steps {
+               script {
+                   // Utiliser withEnv pour définir des variables d'environnement dynamiquement si nécessaire
+                   withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}"]) {
+                       sh 'terraform apply -auto-approve'
+                       // Assigner la valeur de l'IP publique à la variable EC2_PUBLIC_IP
+                       EC2_PUBLIC_IP = sh(script: "terraform output -raw instance_public_ip", returnStdout: true).trim()
+                   }
+                   // Enregistrer le contenu de la variable EC2_PUBLIC_IP
+                   echo "L'adresse IP publique de l'instance EC2 est : ${EC2_PUBLIC_IP}"
+               }
+           }
+       }
         stage('Deploy') {
             steps {
                 echo 'Etape de déploiement...'
