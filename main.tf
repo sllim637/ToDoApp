@@ -9,7 +9,11 @@ resource "aws_instance" "fromJenkinsInstance" {
   tags = {
     Name = "MonInstanceEC2FromJenkins"
   }
-
+  lifecycle {
+    ignore_changes = [
+      instance_state
+    ]
+  }
 }
 
 
