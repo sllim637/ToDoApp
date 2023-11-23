@@ -9,7 +9,7 @@ pipeline {
         SONARSCANNER = 'sonarscanner'
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        SSH_KEY_CREDENTIALS_ID = credentials('AWS_PEM_FILE')
+        SSH_KEY_CREDENTIALS_ID = credentials('SSH_KEY_EC2_INSTANCE')
         EC2_PUBLIC_IP = '' // Placeholder for the public IP address
     }
     stages {
