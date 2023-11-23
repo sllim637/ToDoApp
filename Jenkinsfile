@@ -79,7 +79,7 @@ pipeline {
                 echo 'Etape de déploiement...'
                 // Ajoutez ici les commandes pour le déploiement
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} "
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP}"
                 }
             }
         }
