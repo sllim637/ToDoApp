@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_security_group" "my_security_group" {
   name        = "my-security-group"
-  description = "Mon groupe de sécurité"
+  description = "Mon groupe de securite"
 
   // Règles entrantes
   ingress {
