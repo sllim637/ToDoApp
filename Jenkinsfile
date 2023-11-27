@@ -81,7 +81,7 @@ pipeline {
                 // Ajoutez ici les commandes pour le déploiement
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
                     sh """
-                        ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} << 'EOF'
+                        ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP}" << 'EOF'
                             sudo apt-get update
                             sudo apt-get install -y ca-certificates curl gnupg
                             sudo install -m 0755 -d /etc/apt/keyrings
