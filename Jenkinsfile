@@ -80,13 +80,14 @@ pipeline {
                 echo 'Etape de déploiement...'
                 // Ajoutez ici les commandes pour le déploiement
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
-                    sh """
+                sh """
                 ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} \
                 "sudo sh -c '
                     apt-get update &&
                     apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common &&
                     mkdir -p /etc/apt/keyrings &&
-                    gpg --batch --dearmor -o /etc/apt/keyrings/docker.gpg <(curl -fsSL https://download.docker.com/linux/ubuntu/gpg) &&
+                    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.gpg &&
+                    gpg --batch --dearmor /etc/apt/keyrings/docker.gpg &&
                     echo \"deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable\" > /etc/apt/sources.list.d/docker.list &&
                     apt update &&
                     apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin &&
