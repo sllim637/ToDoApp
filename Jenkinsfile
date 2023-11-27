@@ -1,3 +1,4 @@
+/* groovylint-disable NestedBlockDepth */
 pipeline {
     agent any
     tools {
@@ -81,18 +82,18 @@ pipeline {
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
                     sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP}"
                     echo "after ssh and beginning docker installation"
-                    sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get update'"
-                    sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get install -y ca-certificates curl gnupg'"
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get update'"
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get install -y ca-certificates curl gnupg'"
                     // Set up Docker repository key and source list
-                    sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo install -m 0755 -d /etc/apt/keyrings'"
-                    sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg'"
-                    sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo chmod a+r /etc/apt/keyrings/docker.gpg'"
-                    sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'echo \"deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \$(. /etc/os-release && echo \"\$VERSION_CODENAME\") stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null'"
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID}-o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo install -m 0755 -d /etc/apt/keyrings'"
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg'"
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo chmod a+r /etc/apt/keyrings/docker.gpg'"
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'echo \"deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \$(. /etc/os-release && echo \"\$VERSION_CODENAME\") stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null'"
 
                     // Update and install Docker
-                    sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get update'"
-                    sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get install -y docker-ce docker-ce-cli containerd.io'"
-                    sh "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin'" 
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get update'"
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get install -y docker-ce docker-ce-cli containerd.io'"
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_INSTANCE} 'sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin'" 
                 }
             }
         }
