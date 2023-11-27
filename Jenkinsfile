@@ -81,7 +81,7 @@ pipeline {
                 // Ajoutez ici les commandes pour le déploiement
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
                     script {
-                        def dockerVersion = sh(script: 'sudo docker --version', returnStdout: true).trim()
+                        def dockerVersion = sh(script: "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} 'sudo docker --version'", returnStdout: true).trim()
 
                         if (dockerVersion) {
                             echo "Docker is installed. Version: ${dockerVersion}"
