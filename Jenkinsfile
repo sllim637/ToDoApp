@@ -80,7 +80,7 @@ pipeline {
                 echo 'Etape de déploiement...'
                 // Ajoutez ici les commandes pour le déploiement
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
-                    sh '''
+                    sh """
                         ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} << 'EOF'
                             sudo apt-get update
                             sudo apt-get install -y ca-certificates curl gnupg
@@ -92,7 +92,7 @@ pipeline {
                             sudo apt-get install -y docker-ce docker-ce-cli containerd.io
                             sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose
                         EOF
-                    '''
+                    """
                 }
             }
         }
