@@ -80,25 +80,25 @@ pipeline {
                 echo 'Etape de déploiement...'
                 // Ajoutez ici les commandes pour le déploiement
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
-                    def dockerInstalled = sh(script: 'sudo docker --version', returnStatus: true) == 0
+                    def dockerVersion = sh(script: 'sudo docker --version', returnStdout: true).trim()
 
-                    if (dockerInstalled) {
-                        echo 'Docker is installed.'
-                    } else {
+                    if (dockerVersion) {
+                        echo "Docker is installed. Version: ${dockerVersion}"
+            } else {
                         sh """
-                ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} \
-                "sudo sh -c '
-                    apt-get update &&
-                    apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common &&
-                    mkdir -p /etc/apt/keyrings &&
-                    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.gpg &&
-                    gpg --batch --dearmor /etc/apt/keyrings/docker.gpg &&
-                    echo \"deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
-                    apt update &&
-                    apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin &&
-                    docker compose version
-                '"
-            """
+                    ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} \
+                    "sudo sh -c '
+                        apt-get update &&
+                        apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common &&
+                        mkdir -p /etc/apt/keyrings &&
+                        curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.gpg &&
+                        gpg --batch --dearmor /etc/apt/keyrings/docker.gpg &&
+                        echo \"deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
+                        apt update &&
+                        apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin &&
+                        docker compose version
+                    '"
+                """
                     }
                 }
             }
