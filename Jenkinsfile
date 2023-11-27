@@ -82,17 +82,17 @@ pipeline {
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
                     sh """
                 ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} \
-                    "sudo sh -c '
+                "sudo sh -c '
                     apt-get update &&
                     apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common &&
                     mkdir -p /etc/apt/keyrings &&
-                    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg &&
+                    gpg --batch --dearmor -o /etc/apt/keyrings/docker.gpg <(curl -fsSL https://download.docker.com/linux/ubuntu/gpg) &&
                     echo \"deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable\" > /etc/apt/sources.list.d/docker.list &&
                     apt update &&
                     apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin &&
                     docker compose version
-                    '"
-                    """
+                '"
+            """
                 }
             }
         }
