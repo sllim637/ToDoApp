@@ -80,12 +80,13 @@ pipeline {
                 echo 'Etape de déploiement...'
                 // Ajoutez ici les commandes pour le déploiement
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
-                    def dockerVersion = sh(script: 'sudo docker --version', returnStdout: true).trim()
+                    script {
+                        def dockerVersion = sh(script: 'sudo docker --version', returnStdout: true).trim()
 
-                    if (dockerVersion) {
-                        echo "Docker is installed. Version: ${dockerVersion}"
+                        if (dockerVersion) {
+                            echo "Docker is installed. Version: ${dockerVersion}"
             } else {
-                        sh """
+                            sh """
                     ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} \
                     "sudo sh -c '
                         apt-get update &&
@@ -99,6 +100,7 @@ pipeline {
                         docker compose version
                     '"
                 """
+                        }
                     }
                 }
             }
