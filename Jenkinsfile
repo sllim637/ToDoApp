@@ -35,14 +35,10 @@ pipeline {
                 }
             }
         }
-        stage('Build and Push Docker Image') {
+        stage('Login to Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKERHUB_CREDENTIALS) {
-                        def customImage = docker.build('todoapp')
-                        customImage.push()
-                    }
-                }
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                echo 'Login Completed'
             }
         }
 
