@@ -39,8 +39,9 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_account_credentials', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
                         // Log in to Docker Hub
-                        /* groovylint-disable-next-line GStringExpressionWithinString */
-                        sh "docker login -u ${DOCKER_HUB_USERNAME} --password-stdin <<< ${DOCKER_HUB_PASSWORD}"
+                        sh """
+                    echo "${DOCKER_HUB_PASSWORD}" | docker login -u ${DOCKER_HUB_USERNAME} --password-stdin
+                """
 
                         // Tag the image with the Docker Hub repository name
                         sh "docker tag todoapp ${DOCKER_HUB_USERNAME}/todoapp"
