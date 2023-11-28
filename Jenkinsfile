@@ -63,7 +63,7 @@ pipeline {
                                     POSTGRES_PASSWORD: 28360788
 
                             spring-app:
-                                image: slim637/dockerhub:latest
+                                image: slim637/todoapp:latest
                                 ports:
                                     - "8080:8080"
                                 environment:
