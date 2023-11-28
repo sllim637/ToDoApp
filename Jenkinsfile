@@ -20,6 +20,20 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
+        stage('Build and Dockerize') {
+            steps {
+                script {
+                    // Assuming Dockerfile is in the root of your project
+                    def dockerBuildCommand = 'docker build -t todoapp .'
+
+                    // Execute Maven build and Docker build commands
+                    sh """
+                mvn clean install -DskipTests &&
+                ${dockerBuildCommand}
+            """
+                }
+            }
+        }
         stage('Test + Email notification') {
             steps {
                 echo 'Etape de test...'
