@@ -174,7 +174,7 @@ pipeline {
                         sh "scp -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no docker-compose.yaml ubuntu@${EC2_PUBLIC_IP}:/home/ubuntu"
 
                         // SSH into EC2 instance and run docker-compose
-                        sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} 'cd /home/ubuntu && docker-compose up -d'"
+                        sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} 'cd /home/ubuntu && sudo docker-compose up -d'"
                     }
                 }
             }
