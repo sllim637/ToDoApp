@@ -12,6 +12,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         SSH_KEY_CREDENTIALS_ID = credentials('AWS_PEM_FILE')
         EC2_PUBLIC_IP = '' // Placeholder for the public IP address
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub_credentials')
     }
     stages {
         stage('Build') {
@@ -34,24 +35,17 @@ pipeline {
                 }
             }
         }
-        stage('Push to Docker Hub') {
+        stage('Build and Push Docker Image') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
-                        // Log in to Docker Hub
-                        sh """
-                    echo "${DOCKER_HUB_PASSWORD}" | docker login -u ${DOCKER_HUB_USERNAME} --password-stdin
-                """
-
-                        // Tag the image with the Docker Hub repository name
-                        sh "docker tag todoapp ${DOCKER_HUB_USERNAME}/todoapp"
-
-                        // Push the image to Docker Hub
-                        sh "docker push ${DOCKER_HUB_USERNAME}/todoapp"
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKERHUB_CREDENTIALS) {
+                        def customImage = docker.build('todoapp')
+                        customImage.push()
                     }
                 }
             }
         }
+
         stage('Test + Email notification') {
             steps {
                 echo 'Etape de test...'
