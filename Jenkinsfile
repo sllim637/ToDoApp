@@ -39,6 +39,8 @@ pipeline {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 echo 'Login Completed'
+                sh 'sudo docker push slim637/todoapp'
+                echo 'Push Image Completed'
             }
         }
 
