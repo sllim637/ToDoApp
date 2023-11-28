@@ -136,7 +136,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('connecto to instance and Docker installation') {
             steps {
                 echo 'Etape de déploiement...'
                 // Ajoutez ici les commandes pour le déploiement
@@ -162,6 +162,19 @@ pipeline {
                     '"
                 """
                         }
+                    }
+                }
+            }
+        }
+        stage('Copy and Run Docker Compose') {
+            steps {
+                sshagent([SSH_KEY_CREDENTIALS_ID]) {
+                    script {
+                        // Copy docker-compose.yaml to EC2 instance
+                        sh "scp -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no docker-compose.yaml ubuntu@${EC2_PUBLIC_IP}:/home/ubuntu"
+
+                        // SSH into EC2 instance and run docker-compose
+                        sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} 'cd /home/ubuntu && docker-compose up -d'"
                     }
                 }
             }
