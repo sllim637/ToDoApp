@@ -56,22 +56,22 @@ pipeline {
                             postgres:
                                 image: postgres:latest
                                 ports:
-                                - "15432:5432"
+                                    - "15432:5432"
                                 environment:
-                                POSTGRES_DB: postgres
-                                POSTGRES_USER: slim
-                                POSTGRES_PASSWORD: 28360788
+                                    POSTGRES_DB: postgres
+                                    POSTGRES_USER: slim
+                                    POSTGRES_PASSWORD: 28360788
 
                             spring-app:
                                 image: slim637/dockerhub:latest
                                 ports:
-                                - "8080:8080"
+                                    - "8080:8080"
                                 environment:
-                                SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
-                                SPRING_DATASOURCE_USERNAME: slim
-                                SPRING_DATASOURCE_PASSWORD: 28360788
+                                    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+                                    SPRING_DATASOURCE_USERNAME: slim
+                                    SPRING_DATASOURCE_PASSWORD: 28360788
                                 depends_on:
-                                - postgres
+                                    - postgres
                         """
 
                         // Write the content to docker-compose.yaml file
