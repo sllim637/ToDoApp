@@ -1,4 +1,5 @@
 /* groovylint-disable LineLength, NestedBlockDepth */
+/* groovylint-disable-next-line CompileStatic */
 pipeline {
     agent any
     tools {
@@ -86,37 +87,7 @@ pipeline {
                 echo 'Etape de test...'
                 sh 'mvn test'
             }
-            post {
-                always {
-                    script {
-                        // Rechercher les rapports JUnit
-                        def junitReports = sh script: 'find $WORKSPACE -name "TEST-*.xml"', returnStdout: true
-                        // Envoyer les rapports par e-mail
-                        emailext body: junitReports,
-                        subject: 'Rapports JUnit',
-                        to: 'slim.hammami1977@gmail.com'
-                    }
-                }
-            }
         }
-        stage('SonarQube Analysis') {
-            steps {
-                //     withSonarQubeEnv("${SONARSERVER}") {
-                //     sh '''mvn clean verify sonar:sonar \
-                //     -Dsonar.projectKey=TodoApp \
-                //     -Dsonar.projectName=''TodoApp'' \
-                //     -Dorg.slf4j.simpleLogger.defaultLogLevel=debug '''
-                // }
-                echo 'static code analysis simulations'
-            }
-        }
-
-        // stage('Performance Tests') {
-        //     steps {
-        //         // Étape pour les tests de performance avec Apache JMeter
-        //         sh 'jmeter -n -t /path/to/performance_test.jmx -l /path/to/performance_results.jtl'
-        //     }
-        // }
         stage('Terraform Init') {
             steps {
                 sh 'terraform init'
@@ -176,12 +147,6 @@ pipeline {
                         sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} 'cd /home/ubuntu && sudo docker-compose up -d'"
                     }
                 }
-            }
-        }
-        stage('Release') {
-            steps {
-                echo 'Etape de release...'
-            // Ajoutez ici les commandes pour une éventuelle release
             }
         }
     }
