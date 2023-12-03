@@ -12,7 +12,7 @@ services:
       POSTGRES_PASSWORD: 28360788
 
   # Spring Boot application service
-  spring-app:
+  todo-app:
     build: .
     ports:
       - "8080:8080"  # Map the local port 8080 to the Spring Boot application port
