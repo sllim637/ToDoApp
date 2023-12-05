@@ -178,10 +178,12 @@ pipeline {
                 }
             }
         }
-        stage('Release') {
+        stage('Deploy Prometheus and Grafana') {
             steps {
-                echo 'Etape de release...'
-            // Ajoutez ici les commandes pour une éventuelle release
+                sshagent([SSH_KEY_CREDENTIALS_ID])
+                script {
+                    sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} sudo docker-compose -f prom_graf_docker_compose.yml up"
+                }
             }
         }
     }
