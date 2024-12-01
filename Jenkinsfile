@@ -110,13 +110,6 @@ pipeline {
                 echo 'static code analysis simulations'
             }
         }
-
-        // stage('Performance Tests') {
-        //     steps {
-        //         // Étape pour les tests de performance avec Apache JMeter
-        //         sh 'jmeter -n -t /path/to/performance_test.jmx -l /path/to/performance_results.jtl'
-        //     }
-        // }
         stage('Terraform Init') {
             steps {
                 sh 'terraform init'
@@ -182,7 +175,7 @@ pipeline {
             steps {
                 sshagent([SSH_KEY_CREDENTIALS_ID]) {
                     script {
-                        sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} sudo docker-compose -f prom_graf_docker_compose.yml up"
+                      //  sh "ssh -i ${SSH_KEY_CREDENTIALS_ID} -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} sudo docker-compose -f prom_graf_docker_compose.yml up"
                     }
                 }
             }
